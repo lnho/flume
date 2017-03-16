@@ -101,15 +101,15 @@ abstract class EventQueueBackingStoreFile extends EventQueueBackingStore {
       throw new BadCheckpointException(msg);
     }
     mappedBuffer = checkpointFileHandle.getChannel().map(MapMode.READ_WRITE, 0,
-        checkpointFile.length());
-    elementsBuffer = mappedBuffer.asLongBuffer();
+        checkpointFile.length());  //这里的mappedBuffer就是检查点文件
+    elementsBuffer = mappedBuffer.asLongBuffer();  //转为long形式
 
-    long version = elementsBuffer.get(INDEX_VERSION);
+    long version = elementsBuffer.get(INDEX_VERSION);//第0位用于标识检查点版本号
     if (version != (long) getVersion()) {
       throw new BadCheckpointException("Invalid version: " + version + " " +
           name + ", expected " + getVersion());
     }
-    long checkpointComplete = elementsBuffer.get(INDEX_CHECKPOINT_MARKER);
+    long checkpointComplete = elementsBuffer.get(INDEX_CHECKPOINT_MARKER);//第4位用于标识检查点的状态
     if (checkpointComplete != (long) CHECKPOINT_COMPLETE) {
       throw new BadCheckpointException("Checkpoint was not completed correctly,"
           + " probably because the agent stopped while the channel was"

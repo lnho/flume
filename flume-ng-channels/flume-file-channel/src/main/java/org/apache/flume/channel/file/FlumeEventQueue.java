@@ -566,7 +566,7 @@ final class FlumeEventQueue {
       byte[] checksum = new byte[16];
       file.read(checksum);
       ByteBuffer buffer = ByteBuffer.allocate(
-          (int) (file.length() - file.getFilePointer()));
+          (int) (file.length() - file.getFilePointer())); //filePointer就是文件当前偏移量，也就是把剩余的文件内容读出去来
       fileChannel.read(buffer);
       byte[] fileChecksum = digest.digest(buffer.array());
       if (!Arrays.equals(checksum, fileChecksum)) {

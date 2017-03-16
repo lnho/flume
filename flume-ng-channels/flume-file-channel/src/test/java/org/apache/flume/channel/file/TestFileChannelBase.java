@@ -43,7 +43,7 @@ public class TestFileChannelBase {
 
   @Before
   public void setup() throws Exception {
-    baseDir = Files.createTempDir();
+    baseDir = new File("D:/data/flume");
     checkpointDir = new File(baseDir, "chkpt");
     backupDir = new File(baseDir, "backup");
     uncompressedBackupCheckpoint = new File(backupDir, "checkpoint");

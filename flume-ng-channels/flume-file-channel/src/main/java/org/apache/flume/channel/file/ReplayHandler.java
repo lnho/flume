@@ -102,7 +102,7 @@ class ReplayHandler {
                 @Nullable KeyProvider encryptionKeyProvider,
                 boolean fsyncPerTransaction) {
     this.queue = queue;
-    this.lastCheckpoint = queue.getLogWriteOrderID();
+    this.lastCheckpoint = queue.getLogWriteOrderID();//初始化上次检查点
     pendingTakes = Lists.newArrayList();
     readers = Maps.newHashMap();
     logRecordBuffer = new PriorityQueue<LogRecord>();
@@ -245,7 +245,7 @@ class ReplayHandler {
     int count = 0;
     MultiMap transactionMap = new MultiValueMap();
     // seed both with the highest known sequence of either the tnxid or woid
-    long transactionIDSeed = lastCheckpoint, writeOrderIDSeed = lastCheckpoint;
+    long transactionIDSeed = lastCheckpoint, writeOrderIDSeed = lastCheckpoint;//lastCheckpoint来自checkpoint.meta里面的woid
     LOG.info("Starting replay of " + logs);
     //Load the inflight puts into the transaction map to see if they were
     //committed in one of the logs.
